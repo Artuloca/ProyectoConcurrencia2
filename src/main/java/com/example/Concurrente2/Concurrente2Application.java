@@ -16,6 +16,9 @@ import java.io.IOException;
 public class Concurrente2Application implements CommandLineRunner {
 
 	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	public static void main(String[] args) {
@@ -59,5 +62,10 @@ public class Concurrente2Application implements CommandLineRunner {
 		} catch (IOException e) {
 			System.out.println("Error leyendo el archivo CSV: " + e.getMessage());
 		}
+
+		usuarioService.analizarDatos();
+		
+		
+
 	}
 }
