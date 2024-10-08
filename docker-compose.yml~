@@ -1,8 +1,0 @@
-services:
-  mysql:
-    image: mysql:9.0
-    environment:
-      - MYSQL_DATABASE=concurrente_2
-      - MYSQL_admin_PASSWORD=admin
-    ports:
-      - 3307:3306
