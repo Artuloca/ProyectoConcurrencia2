@@ -25,9 +25,23 @@ public class UsuarioService {
         // Implementa la lógica de análisis concurrente aquí
         for (Map<String, Object> usuario : usuarios) {
             executorService.submit(() -> {
-                // Contar cuántos usuarios tienen ingresos mayores a 50K
+                // Check if income is greater than 50K
                 if (">50K".equals(usuario.get("income"))) {
                     System.out.println("Usuario con ingresos mayores a 50K: " + usuario);
+                }
+
+                // Check if education level is 'Bachelors'
+                if ("Bachelors".equals(usuario.get("education"))) {
+                    System.out.println("Usuario con educación de Bachelors: " + usuario);
+                }
+
+                // Check if marital status is 'Married'
+                if ("Married".equals(usuario.get("marital_status"))) {
+                    System.out.println("Usuario con estado civil casado: " + usuario);
+                }
+                // Check if occupation is 'Tech-support'
+                if ("Tech-support".equals(usuario.get("occupation"))) {
+                    System.out.println("Usuario con ocupación de soporte técnico: " + usuario);
                 }
             });
         }
