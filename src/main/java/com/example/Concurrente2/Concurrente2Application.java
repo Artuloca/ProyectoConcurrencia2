@@ -22,10 +22,17 @@ public class Concurrente2Application implements CommandLineRunner {
 		SpringApplication.run(Concurrente2Application.class, args);
 	}
 
+
+
 	@Override
 	public void run(String... args) throws Exception {
 		// Crea la tabla en MySQL
-		String sql = "CREATE TABLE IF NOT EXISTS usuarios (" +
+
+		String sql = "DROP TABLE IF EXISTS usuarios";
+		jdbcTemplate.execute(sql);
+
+
+		 sql = "CREATE TABLE IF NOT EXISTS usuarios (" +
 				"age INT, " +
 				"workclass VARCHAR(100), " +
 				"fnlwgt INT, " +
