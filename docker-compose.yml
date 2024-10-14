@@ -6,7 +6,7 @@ services:
     container_name: concurrente_2
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: my_database
+      MYSQL_DATABASE: concurrente2
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
     ports:
