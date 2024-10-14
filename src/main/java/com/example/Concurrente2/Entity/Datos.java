@@ -7,6 +7,11 @@ import jakarta.persistence.*;
 @Table(name = "datos")
 public class Datos {
 
+    //Antes de importar los datos, se debe crear la tabla 'datos' en la base de datos.
+    //Y usar la siguiente Query para modificar la columna 'id' para que sea autoincremental.
+    //ALTER TABLE datos MODIFY COLUMN id BIGINT AUTO_INCREMENT;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

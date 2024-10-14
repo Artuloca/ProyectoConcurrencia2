@@ -14,11 +14,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - mysql_network
+      - mysql_concurrente2Net
 
 volumes:
   mysql_data:
 
 networks:
-  mysql_network:
+  mysql_concurrente2Net:
     driver: bridge

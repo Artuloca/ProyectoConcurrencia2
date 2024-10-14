@@ -3,6 +3,7 @@ package com.example.Concurrente2.Service;
 import com.example.Concurrente2.Entity.Datos;
 import com.example.Concurrente2.Repository.DatosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 
@@ -17,8 +18,23 @@ public class DatosService {
     @Autowired
     private DatosRepository datosRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
 
     public void guardarDatos() {
+
+        jdbcTemplate.execute("ALTER TABLE datos MODIFY COLUMN id BIGINT AUTO_INCREMENT");
+
+        Integer rowCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM datos",
+                Integer.class
+        );
+
+        if (rowCount != null && rowCount > 0) {
+            System.out.println("La tabla 'datos' ya contiene datos. No se ejecutará la lógica de importación.");
+            return;
+        }
 
         datosRepository.deleteAllInBatch();
 
@@ -45,7 +61,9 @@ public class DatosService {
                 datos.setNative_country(campos[13]);
                 datos.setIncome(campos[14]);
 
-                datosRepository.save(datos);
+                Datos savedDatos = datosRepository.save(datos);
+
+                System.out.println("Importada línea: " + savedDatos.getId());
             }
         } catch (IOException e) {
             throw new RuntimeException("fallo al obtener los datos", e);
