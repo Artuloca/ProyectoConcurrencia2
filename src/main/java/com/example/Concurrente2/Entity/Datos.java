@@ -9,59 +9,44 @@ public class Datos {
 
     //Antes de importar los datos, se debe crear la tabla 'datos' en la base de datos.
     //Y usar la siguiente Query para modificar la columna 'id' para que sea autoincremental.
-    //ALTER TABLE datos MODIFY COLUMN id BIGINT AUTO_INCREMENT;
+    //ALTER TABLE datos MODIFY COLUMN id BIGInteger AUTO_INCREMENT;
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private int age;
-
+    private Long id;
+    private Integer age;
     private String workclass;
-
-    private int fnlwgt;
-
+    private Integer fnlwgt;
     private String education;
-
-    private int education_num;
-
+    private Integer education_num;
     private String marital_status;
-
     private String occupation;
-
     private String relationship;
-
     private String race;
-
     private String sex;
-
-    private int capital_gain;
-
-    private int capital_loss;
-
-    private int hours_per_week;
-
+    private Integer capital_gain;
+    private Integer capital_loss;
+    private Integer hours_per_week;
     private String native_country;
-
     private String income;
 
 
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -73,11 +58,11 @@ public class Datos {
         this.workclass = workclass;
     }
 
-    public int getFnlwgt() {
+    public Integer getFnlwgt() {
         return fnlwgt;
     }
 
-    public void setFnlwgt(int fnlwgt) {
+    public void setFnlwgt(Integer fnlwgt) {
         this.fnlwgt = fnlwgt;
     }
 
@@ -89,11 +74,11 @@ public class Datos {
         this.education = education;
     }
 
-    public int getEducation_num() {
+    public Integer getEducation_num() {
         return education_num;
     }
 
-    public void setEducation_num(int education_num) {
+    public void setEducation_num(Integer education_num) {
         this.education_num = education_num;
     }
 
@@ -137,27 +122,27 @@ public class Datos {
         this.sex = sex;
     }
 
-    public int getCapital_gain() {
+    public Integer getCapital_gain() {
         return capital_gain;
     }
 
-    public void setCapital_gain(int capital_gain) {
+    public void setCapital_gain(Integer capital_gain) {
         this.capital_gain = capital_gain;
     }
 
-    public int getCapital_loss() {
+    public Integer getCapital_loss() {
         return capital_loss;
     }
 
-    public void setCapital_loss(int capital_loss) {
+    public void setCapital_loss(Integer capital_loss) {
         this.capital_loss = capital_loss;
     }
 
-    public int getHours_per_week() {
+    public Integer getHours_per_week() {
         return hours_per_week;
     }
 
-    public void setHours_per_week(int hours_per_week) {
+    public void setHours_per_week(Integer hours_per_week) {
         this.hours_per_week = hours_per_week;
     }
 
