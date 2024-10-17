@@ -8,7 +8,6 @@ public class DatosProcessorImpl implements DatosProcessor {
 
     @Override
     public void procesar(Datos datos) {
-        // Lógica de procesamiento de datos
         System.out.println("Procesada línea con ID: " + datos.getId());
     }
 }
