@@ -3,6 +3,7 @@ package com.example.Concurrente2.Service;
 import com.example.Concurrente2.Config.ExecutorConfig;
 import com.example.Concurrente2.Entity.Datos;
 import com.example.Concurrente2.Repository.DatosRepository;
+import com.example.Concurrente2.loC.DatosProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class DatosService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private DatosProcessor datosProcessor;
+
     AtomicInteger lineaProcesadas = new AtomicInteger();
 
 
@@ -40,6 +44,8 @@ public class DatosService {
         if (rowCount != null && rowCount > 0) {
             System.out.println("La tabla 'datos' ya contiene datos. No se ejecutará la lógica de importación.");
             return;
+        }else{
+            System.out.println("La tabla 'datos' no contiene datos. Se ejecutará la lógica de importación.");
         }
 
         datosRepository.deleteAllInBatch();
@@ -87,8 +93,8 @@ public class DatosService {
             ExecutorService executor = ExecutorConfig.taskExecutor();
             for (Datos dato : datos) {
                 executor.execute(() -> {
+                    datosProcessor.procesar(dato);
                     lineaProcesadas.getAndIncrement();
-                    System.out.println("Procesada línea con ID: " + dato.getId());
                 });
             }
 
