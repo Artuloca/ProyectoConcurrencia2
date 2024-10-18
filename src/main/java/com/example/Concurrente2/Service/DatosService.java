@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,13 +25,13 @@ public class DatosService {
     @Autowired
     private DatosProcessor datosProcessor;
 
-
-
     @Autowired
     private FileProcessor fileProcessor;
 
     AtomicInteger lineaDBProcesadas = new AtomicInteger();
-    AtomicInteger lineaFileProcesados = new AtomicInteger();
+
+
+    private final Semaphore semaphore = new Semaphore(4);
 
 
     public void procesarArchivos() {
@@ -40,18 +41,13 @@ public class DatosService {
             System.out.println("No hay archivo para procesar");
         } else {
                     fileProcessor.procesar(file);
-                    lineaFileProcesados.getAndIncrement();
         }
     }
 
-    public int getLineaFileProcesados() {
-        return lineaFileProcesados.get();
-    }
 
 
     public void ProcesarDatos() {
-
-        System.out.println("Procesando datos");
+        System.out.println("Procesando datos de la base de datos");
         if (datosRepository.count() == 0) {
             System.out.println("No hay datos para procesar");
         } else {
@@ -59,8 +55,17 @@ public class DatosService {
             ExecutorService executor = ExecutorConfig.taskExecutor();
             for (Datos dato : datos) {
                 executor.execute(() -> {
-                    datosProcessor.procesar(dato);
-                    lineaDBProcesadas.getAndIncrement();
+                    try {
+                        semaphore.acquire();
+                        synchronized (this) {
+                            datosProcessor.procesar(dato);
+                            lineaDBProcesadas.getAndIncrement();
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    } finally {
+                        semaphore.release();
+                    }
                 });
             }
 

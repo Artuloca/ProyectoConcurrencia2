@@ -12,9 +12,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 @Service
 public class FileProcessorImpl implements FileProcessor {
@@ -24,6 +23,8 @@ public class FileProcessorImpl implements FileProcessor {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private final Semaphore semaphore = new Semaphore(4);
 
     @Override
     public void procesar(File file) {
@@ -49,21 +50,22 @@ public class FileProcessorImpl implements FileProcessor {
             String linea;
             List<Datos> batch = new ArrayList<>();
             LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-            ExecutorService executor = Executors.newFixedThreadPool(4);
 
             while ((linea = br.readLine()) != null) {
                 queue.put(linea);
             }
 
             for (int i = 0; i < 4; i++) {
-                executor.submit(() -> {
-                    String line;
-                    while ((line = queue.poll()) != null) {
-                        String[] campos = line.split(",");
-                        if (campos.length != 15) {
-                            System.err.println("Línea con formato incorrecto: " + line);
-                            continue;
-                        }
+                new Thread(() -> {
+                    try {
+                        semaphore.acquire();
+                        String line;
+                        while ((line = queue.poll()) != null) {
+                            String[] campos = line.split(",");
+                            if (campos.length != 15) {
+                                System.err.println("Línea con formato incorrecto: " + line);
+                                continue;
+                            }
 
                         Datos datos = new Datos();
                         try {
@@ -96,11 +98,15 @@ public class FileProcessorImpl implements FileProcessor {
                             }
                         }
                     }
-                });
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    } finally {
+                        semaphore.release();
+                    }
+                }).start();
             }
 
-            executor.shutdown();
-            while (!executor.isTerminated()) {
+            while (semaphore.availablePermits() < 4) {
                 Thread.sleep(1000);
             }
             if (!batch.isEmpty()) {

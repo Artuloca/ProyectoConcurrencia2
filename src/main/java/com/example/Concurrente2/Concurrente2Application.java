@@ -17,12 +17,14 @@ public class Concurrente2Application  {
 	@Bean
 	public CommandLineRunner commandLineRunner(DatosService datosService) {
 		return args -> {
-			datosService.procesarArchivos();
-			int lineaFileProcesadas = datosService.getLineaFileProcesados();
-			System.out.println("Se ha terminado el procesamiento: " + lineaFileProcesadas + " lineas del archivo procesadas");
 			datosService.ProcesarDatos();
-			int lineaDBProcesadas = datosService.getLineaDBProcesadas();
-			System.out.println("Se ha terminado el procesamiento: " + lineaDBProcesadas + " lineas de base de datos procesadas");
+			if (datosService.getLineaDBProcesadas() == 0) {
+				System.out.println("Importe los datos");
+			}else {
+				int lineaDBProcesadas = datosService.getLineaDBProcesadas();
+				System.out.println("Se ha terminado el procesamiento: " + lineaDBProcesadas + " lineas de base de datos procesadas");
+			}
+			datosService.procesarArchivos();
 		};
 
 	}
