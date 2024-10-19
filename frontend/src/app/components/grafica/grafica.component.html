@@ -1,0 +1,13 @@
+<div>
+  <!-- Botones para cambiar entre diferentes gráficas -->
+  <button (click)="showGraphEdadVsHoras()">Edad vs Horas</button>
+  <button (click)="showGraphEdadVsIngreso()">Edad vs Ingreso</button>
+  <button (click)="showGraphGeneric('age', 'fnlwgt')">Edad vs Fnlwgt</button>
+  <button (click)="showGraph4()">Relación vs Proporción</button>  <!-- Nuevo botón para la gráfica circular -->
+</div>
+
+<!-- Aquí se insertará el gráfico -->
+<figure id="bar"></figure>
+
+<!-- Mostrar el título de la gráfica -->
+<h2>{{ title }}</h2>

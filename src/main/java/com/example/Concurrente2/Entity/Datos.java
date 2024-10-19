@@ -163,5 +163,27 @@ public class Datos {
         this.income = income;
     }
 
+    @Override
+    public String toString() {
+        return "Datos{" +
+                "id=" + id +
+                ", age=" + age +
+                ", workclass='" + workclass + '\'' +
+                ", fnlwgt=" + fnlwgt +
+                ", education='" + education + '\'' +
+                ", education_num=" + education_num +
+                ", marital_status='" + marital_status + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", relationship='" + relationship + '\'' +
+                ", race='" + race + '\'' +
+                ", sex='" + sex + '\'' +
+                ", capital_gain=" + capital_gain +
+                ", capital_loss=" + capital_loss +
+                ", hours_per_week=" + hours_per_week +
+                ", native_country='" + native_country + '\'' +
+                ", income='" + income + '\'' +
+                '}';
+    }
+
 
 }
