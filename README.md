@@ -33,13 +33,16 @@ Este proyecto es una aplicación para el monitoreo de datos biologicos utilizand
    ./mvnw spring-boot:run
 El backend estará disponible en http://localhost:8080.
 
-###Instalación del frontend
+### Instalación del frontend
 
 Navega al directorio /frontend:
 
 cd frontend
+
 Instala las dependencias:
+
 npm install
+
 Inicia el servidor de desarrollo de Angular:
 
 ng serve
