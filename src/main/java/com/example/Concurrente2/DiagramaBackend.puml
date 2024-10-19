@@ -1,0 +1,133 @@
+@startuml
+
+package com.example.Concurrente2.Config {
+    class WebConfig {
+        +corsConfigurer(): WebMvcConfigurer
+    }
+}
+
+package com.example.Concurrente2.Controller {
+    class DatosController {
+        -DatosRepository datosRepository
+        +getDatos(): List<Datos>
+    }
+}
+
+package com.example.Concurrente2.Entity {
+    class Datos {
+        +Long id
+        +Integer age
+        +String workclass
+        +Integer fnlwgt
+        +String education
+        +Integer education_num
+        +String marital_status
+        +String occupation
+        +String relationship
+        +String race
+        +String sex
+        +Integer capital_gain
+        +Integer capital_loss
+        +Integer hours_per_week
+        +String native_country
+        +String income
+        +getId(): Long
+        +setId(Long id)
+        +getAge(): Integer
+        +setAge(Integer age)
+        +getWorkclass(): String
+        +setWorkclass(String workclass)
+        +getFnlwgt(): Integer
+        +setFnlwgt(Integer fnlwgt)
+        +getEducation(): String
+        +setEducation(String education)
+        +getEducation_num(): Integer
+        +setEducation_num(Integer education_num)
+        +getMarital_status(): String
+        +setMarital_status(String marital_status)
+        +getOccupation(): String
+        +setOccupation(String occupation)
+        +getRelationship(): String
+        +setRelationship(String relationship)
+        +getRace(): String
+        +setRace(String race)
+        +getSex(): String
+        +setSex(String sex)
+        +getCapital_gain(): Integer
+        +setCapital_gain(Integer capital_gain)
+        +getCapital_loss(): Integer
+        +setCapital_loss(Integer capital_loss)
+        +getHours_per_week(): Integer
+        +setHours_per_week(Integer hours_per_week)
+        +getNative_country(): String
+        +setNative_country(String native_country)
+        +getIncome(): String
+        +setIncome(String income)
+        +toString(): String
+    }
+}
+
+package com.example.Concurrente2.loC {
+    interface DatosProcessor {
+        +procesar(Datos datos)
+    }
+
+    class DatosProcessorImpl {
+        +procesar(Datos datos)
+    }
+
+    interface FileProcessor {
+        +procesar(File file)
+    }
+
+    class FileProcessorImpl {
+        -DatosRepository datosRepository
+        -JdbcTemplate jdbcTemplate
+        -Semaphore semaphore
+        +procesar(File file)
+    }
+}
+
+package com.example.Concurrente2.Repository {
+    interface DatosRepository {
+    }
+}
+
+package com.example.Concurrente2.Service {
+    class DatosService {
+        -DatosRepository datosRepository
+        -DatosProcessor datosProcessor
+        -FileProcessor fileProcessor
+        -AtomicInteger lineaDBProcesadas
+        -Semaphore semaphore
+        +procesarArchivos()
+        +ProcesarDatos()
+        +getLineaDBProcesadas(): int
+    }
+}
+
+package com.example.Concurrente2 {
+    class Concurrente2Application {
+        +main(String[] args)
+        +commandLineRunner(DatosService datosService): CommandLineRunner
+    }
+
+    class FrontendController {
+        +redirect(): String
+    }
+}
+
+DatosController --> DatosRepository
+DatosService --> DatosRepository
+DatosService --> DatosProcessor
+DatosService --> FileProcessor
+FileProcessorImpl --> DatosRepository
+FileProcessorImpl --> JdbcTemplate
+DatosProcessorImpl --> Datos
+FileProcessorImpl --> File
+DatosService --> AtomicInteger
+DatosService --> Semaphore
+Concurrente2Application --> DatosService
+FrontendController --> index.html
+
+@enduml
