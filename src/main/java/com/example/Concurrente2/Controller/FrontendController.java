@@ -1,4 +1,4 @@
-package com.example.Concurrente2;
+package com.example.Concurrente2.Controller;
 
 
 import org.springframework.stereotype.Controller;
